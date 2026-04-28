@@ -1,0 +1,46 @@
+@model sport_test.Models.User
+
+@{
+    ViewData["Title"] = "Detalle Usuario";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Index" asp-controller="User" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <div>
+        <h4 class="fw-bold mb-0"><i class="fas fa-user me-2 text-info"></i>Detalle del Usuario</h4>
+        <small class="text-muted">Información completa del usuario</small>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4 fw-semibold text-muted">ID</dt>
+                    <dd class="col-sm-8">#@Model.Id</dd>
+
+                    <dt class="col-sm-4 fw-semibold text-muted">Nombre</dt>
+                    <dd class="col-sm-8">@Model.Name</dd>
+
+                    <dt class="col-sm-4 fw-semibold text-muted">Documento</dt>
+                    <dd class="col-sm-8">@Model.Document</dd>
+
+                    <dt class="col-sm-4 fw-semibold text-muted">Teléfono</dt>
+                    <dd class="col-sm-8">@Model.Phone</dd>
+
+                    <dt class="col-sm-4 fw-semibold text-muted">Correo</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <a asp-action="Edit" asp-controller="User" asp-route-id="@Model.Id" class="btn btn-warning btn-sm">
+                    <i class="fas fa-pen me-2"></i>Editar
+                </a>
+                <a asp-action="Index" asp-controller="User" class="btn btn-outline-secondary btn-sm">Volver</a>
+            </div>
+        </div>
+    </div>
+</div>

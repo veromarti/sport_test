@@ -1,0 +1,60 @@
+@model sport_test.Models.SportSpace
+
+@{
+    ViewData["Title"] = "Editar Espacio Deportivo";
+    var spaceTypes = new[] { "Fútbol", "Baloncesto", "Piscina", "Tenis", "Voleibol", "Squash", "Atletismo", "Otro" };
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-action="Index" asp-controller="SportSpace" class="btn btn-outline-secondary btn-sm me-3">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <div>
+        <h4 class="fw-bold mb-0"><i class="fas fa-pen me-2 text-warning"></i>Editar Espacio Deportivo</h4>
+        <small class="text-muted">Actualizar información del espacio deportivo</small>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form asp-action="Update" asp-controller="SportSpace" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="mt-3">
+                        <label class="form-label fw-semibold">Nombre del espacio</label>
+                        <input type="text" class="form-control" asp-for="Name" />
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label fw-semibold">Tipo de espacio</label>
+                        <select asp-for="Type" class="form-select">
+                            <option value="">-- Seleccione un tipo --</option>
+                            @foreach (var t in spaceTypes)
+                            {
+                                <option value="@t" selected="@(Model.Type == t ? "selected" : null)">@t</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label fw-semibold">Capacidad (personas)</label>
+                        <input type="number" class="form-control" asp-for="Capacity" min="1" />
+                    </div>
+
+                    @if (TempData["message"] != null && TempData["success"]?.ToString() != "True")
+                    {
+                        <div class="alert alert-danger rounded-3 mt-3">
+                            <i class="fas fa-circle-xmark me-2"></i>@TempData["message"]
+                        </div>
+                    }
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button class="btn btn-warning">
+                            <i class="fas fa-floppy-disk me-2"></i>Actualizar
+                        </button>
+                        <a asp-action="Index" asp-controller="SportSpace" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+@model IEnumerable<sport_test.Models.SportSpace>
+
+@{
+    ViewData["Title"] = "Espacios Deportivos";
+    var types = ViewBag.Types as List<string> ?? new List<string>();
+    string selectedType = ViewBag.SelectedType ?? "";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-0"><i class="fas fa-futbol me-2 text-success"></i>Espacios Deportivos</h4>
+        <small class="text-muted">Gestión de espacios del complejo deportivo</small>
+    </div>
+    <a asp-action="Create" asp-controller="SportSpace" class="btn btn-success">
+        <i class="fas fa-plus me-2"></i>Nuevo Espacio
+    </a>
+</div>
+
+@if (TempData["message"] != null)
+{
+    string success = TempData["success"]?.ToString() ?? "True";
+    string alertClass = success == "True" ? "alert-success" : "alert-danger";
+    string icon = success == "True" ? "fa-circle-check" : "fa-circle-xmark";
+    <div class="alert @alertClass alert-dismissible fade show rounded-3 mb-3" role="alert">
+        <i class="fas @icon me-2"></i>@TempData["message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (types.Any())
+{
+    <div class="mb-3 d-flex gap-2 flex-wrap">
+        <a asp-action="Index" asp-controller="SportSpace"
+           class="btn btn-sm @(string.IsNullOrEmpty(selectedType) ? "btn-secondary" : "btn-outline-secondary")">
+            Todos
+        </a>
+        @foreach (var type in types)
+        {
+            <a asp-action="Index" asp-controller="SportSpace" asp-route-type="@type"
+               class="btn btn-sm @(selectedType == type ? "btn-success" : "btn-outline-success")">
+                @type
+            </a>
+        }
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>NOMBRE</th>
+                        <th>TIPO</th>
+                        <th>CAPACIDAD</th>
+                        <th class="text-end pe-4">ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fas fa-futbol fa-2x mb-2 d-block"></i>No hay espacios deportivos registrados
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var space in Model)
+                    {
+                        <tr>
+                            <td class="ps-4 text-muted">#@space.Id</td>
+                            <td class="fw-semibold">@space.Name</td>
+                            <td>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">@space.Type</span>
+                            </td>
+                            <td class="text-muted"><i class="fas fa-users me-1"></i>@space.Capacity personas</td>
+                            <td class="text-end pe-4">
+                                <form asp-action="Destroy" asp-controller="SportSpace" method="post" class="d-inline">
+                                    <input type="hidden" name="Id" value="@space.Id" />
+                                    <a asp-action="Show" asp-controller="SportSpace" asp-route-id="@space.Id"
+                                       class="btn btn-sm btn-outline-info me-1" title="Ver detalle">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a asp-action="Edit" asp-controller="SportSpace" asp-route-id="@space.Id"
+                                       class="btn btn-sm btn-outline-warning me-1" title="Editar">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
+                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                            onclick="return confirm('¿Está seguro de eliminar este espacio deportivo?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
